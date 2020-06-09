@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "447777854258",
+    "firebase_url": "https://futnewz.firebaseio.com",
+    "project_id": "futnewz",
+    "storage_bucket": "futnewz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447777854258:android:40e8e36e144db651283d2b",
+        "android_client_info": {
+          "package_name": "com.naveenkumar24637.futnewz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447777854258-qdbduoii58c5qnm4iqtfi5ov4fjnul3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK98V6rfK-82C18LdD3EZZtHFwfPwnDkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447777854258-qdbduoii58c5qnm4iqtfi5ov4fjnul3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
