@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'article.g.dart';
 
 @JsonSerializable()
-class Article {
-  Article(
-    // this.source,
+class Article with EquatableMixin {
+  Article({
+    this.source,
     this.author,
     this.title,
     this.description,
@@ -13,9 +14,9 @@ class Article {
     this.urlToImage,
     this.publishedAt,
     this.content,
-  );
+  });
 
-  // Map<String, String> source;
+  Map<String, String> source;
   String author;
   String title;
   String description;
@@ -24,6 +25,18 @@ class Article {
   String publishedAt;
   String content;
 
+  @override
+  List<Object> get props => [
+        source,
+        author,
+        title,
+        description,
+        url,
+        urlToImage,
+        publishedAt,
+        content
+      ];
+
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);
 
@@ -31,16 +44,19 @@ class Article {
 }
 
 @JsonSerializable()
-class Articles {
-  Articles(
+class Articles with EquatableMixin {
+  Articles({
     this.status,
     this.totalResults,
     this.articles,
-  );
+  });
 
   String status;
   int totalResults;
   List<Article> articles;
+
+  @override
+  List<Object> get props => [status, totalResults, articles];
 
   factory Articles.fromJson(Map<String, dynamic> json) =>
       _$ArticlesFromJson(json);
