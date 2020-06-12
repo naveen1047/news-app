@@ -5,7 +5,7 @@ void main() {
   test("parses article.json over a network", () async {
     final api = NewsApi();
     final articles = await api.fetchArticle();
-    
+
     expect(articles.status, 'ok');
   }, skip: false);
 }
