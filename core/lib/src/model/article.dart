@@ -16,6 +16,7 @@ class Article with EquatableMixin {
     this.content,
   });
 
+//TODO: implement correcr data type
   Map<String, String> source;
   String author;
   String title;

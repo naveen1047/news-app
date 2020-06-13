@@ -1,7 +1,3 @@
-// library core;
-
-// /// A Calculator.
-// class Calculator {
-//   /// Returns [value] plus 1.
-//   int addOne(int value) => value + 1;
-// }
+export 'src/bloc/news_bloc.dart';
+export 'src/networking/news_api.dart';
+export 'src/bloc/simple_bloc_delegate.dart';

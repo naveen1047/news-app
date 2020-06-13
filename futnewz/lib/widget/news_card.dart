@@ -24,11 +24,13 @@ class NewsCard extends StatelessWidget {
       onTap: onTap,
       child: Column(
         children: <Widget>[
-          Container(
-            height: 200.0,
-            width: double.maxFinite,
-            child: image,
-          ),
+          image != null
+              ? Container(
+                  height: 200.0,
+                  width: double.maxFinite,
+                  child: image,
+                )
+              : Container(),
           Padding(
             padding: ktopPadding,
             child: Text(title, style: kTitle),
@@ -49,9 +51,12 @@ class NewsCard extends StatelessWidget {
                   website,
                   style: kDefaultText,
                 ),
-                Text(
-                  author,
-                  style: kDefaultText,
+                Flexible(
+                  child: Text(
+                    author,
+                    style: kDefaultText,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
