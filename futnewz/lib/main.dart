@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:futnewz/colors.dart';
+import 'package:futnewz/constant.dart';
+import 'package:futnewz/theme.dart';
 import 'widget/news_card.dart';
 
 void main() {
@@ -21,17 +24,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: theme,
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: kWhiteBackgroundColor,
             leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-            title: Text('NEWS'),
+            title: Text(
+              'NEWS',
+              style: kAppbarTitle,
+            ),
             actions: <Widget>[
               IconButton(icon: Icon(Icons.search), onPressed: () {}),
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: kHomePadding,
             child: BlocProvider(
               create: (context) => NewsBloc(newsApi: newsApi)..add(FetchNews()),
               child: HomeView(),
@@ -64,7 +73,7 @@ class HomeView extends StatelessWidget {
               title: articles[index].title,
               description: articles[index].description,
               website: articles[index].source.name,
-              author: articles[index].author?? '',
+              author: articles[index].author ?? '',
               onTap: () {
                 print('object');
               },
@@ -80,20 +89,3 @@ class HomeView extends StatelessWidget {
     });
   }
 }
-
-//  children: <Widget>[
-//             NewsCard(
-//               image: Image.asset(
-//                 'assets/images/match_1.jpg',
-//                 fit: BoxFit.cover,
-//               ),
-//               title: 'Excepteur sint occaecat cupidatat non proident.',
-//               description:
-//                   'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est eopksio laborum.',
-//               website: 'website',
-//               author: 'author',
-//               onTap: () {
-//                 print('object');
-//               },
-//             ),
-//           ],

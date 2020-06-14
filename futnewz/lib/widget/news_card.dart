@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:futnewz/theme.dart';
 
+import '../constant.dart';
+
 class NewsCard extends StatelessWidget {
   final Function onTap;
   final Image image;
@@ -43,18 +45,23 @@ class NewsCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: ktopPadding,
+            padding: kBottomDoubledPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  website,
-                  style: kDefaultText,
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.public),
+                    SizedBox(width: 4.0),
+                    Text(
+                      website,
+                    ),
+                  ],
                 ),
                 Flexible(
                   child: Text(
                     author,
-                    style: kDefaultText,
+                    // style: kDefaultText,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
