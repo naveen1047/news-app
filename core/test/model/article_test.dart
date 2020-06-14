@@ -4,8 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('article', () {
     final articles = Articles(status: 'ok', totalResults: 20, articles: []);
+    final source = Source(id: null, name: "New York Times");
     final article = Article(
-      source: {"id": null, "name": "New York Times"},
+      source: source,
       author: 'mock namc',
       title: 'mock title',
     );
@@ -16,7 +17,7 @@ void main() {
 
     test('article prop are equal', () {
       expect(article.props.take(3), [
-        {"id": null, "name": "New York Times"},
+        source,
         'mock namc',
         'mock title',
       ]);

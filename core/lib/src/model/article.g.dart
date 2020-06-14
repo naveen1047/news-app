@@ -8,9 +8,9 @@ part of 'article.dart';
 
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return Article(
-    source: (json['source'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    ),
+    source: json['source'] == null
+        ? null
+        : Source.fromJson(json['source'] as Map<String, dynamic>),
     author: json['author'] as String,
     title: json['title'] as String,
     description: json['description'] as String,
@@ -47,4 +47,16 @@ Map<String, dynamic> _$ArticlesToJson(Articles instance) => <String, dynamic>{
       'status': instance.status,
       'totalResults': instance.totalResults,
       'articles': instance.articles,
+    };
+
+Source _$SourceFromJson(Map<String, dynamic> json) {
+  return Source(
+    id: json['id'] as String,
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
     };

@@ -8,8 +8,6 @@ abstract class NewsEvent extends Equatable {
 class FetchNews extends NewsEvent {
   @override
   List<Object> get props => [];
-
-  
 }
 
 class FetchNewsArticle extends NewsEvent {

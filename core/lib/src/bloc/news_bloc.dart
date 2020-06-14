@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:core/src/model/article.dart';
 import 'package:core/src/networking/news_api.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/rendering.dart';
 import 'package:meta/meta.dart';
 
 part 'news_event.dart';

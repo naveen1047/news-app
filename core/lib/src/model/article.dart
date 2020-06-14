@@ -16,8 +16,7 @@ class Article with EquatableMixin {
     this.content,
   });
 
-//TODO: implement correcr data type
-  Map<String, String> source;
+  Source source;
   String author;
   String title;
   String description;
@@ -63,4 +62,20 @@ class Articles with EquatableMixin {
       _$ArticlesFromJson(json);
 
   Map<String, dynamic> toJson() => _$ArticlesToJson(this);
+}
+
+@JsonSerializable()
+class Source {
+  Source({
+    this.id,
+    this.name
+  });
+
+  String id;
+  String name;
+
+  factory Source.fromJson(Map<String, dynamic> json) =>
+      _$SourceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SourceToJson(this);
 }

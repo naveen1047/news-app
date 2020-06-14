@@ -63,7 +63,7 @@ class HomeView extends StatelessWidget {
               ),
               title: articles[index].title,
               description: articles[index].description,
-              website: articles[index].source['name'],
+              website: articles[index].source.name,
               author: articles[index].author?? '',
               onTap: () {
                 print('object');
