@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           body: Padding(
             padding: kHomePadding,
             child: BlocProvider(
-              create: (context) => NewsBloc(newsApi: newsApi)..add(FetchNews()),
+              create: (context) => NewsBloc(newsApi: newsApi)..add(FetchTopHeadlines()),
               child: HomeView(),
             ),
           ),

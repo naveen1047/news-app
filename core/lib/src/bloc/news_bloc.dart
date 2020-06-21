@@ -6,6 +6,8 @@ import 'package:core/src/networking/news_api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../enums.dart';
+
 part 'news_event.dart';
 part 'news_state.dart';
 
@@ -14,6 +16,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   NewsBloc({@required this.newsApi}) : assert(newsApi != null);
 
+  Articles _topHeadline;
+
   @override
   NewsState get initialState => NewsLoading();
 
@@ -21,17 +25,17 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   Stream<NewsState> mapEventToState(
     NewsEvent event,
   ) async* {
-    if (event is FetchNews) {
-      yield* _mapFetchNewsToState();
+    if (event is FetchTopHeadlines) {
+      yield* _mapFetchTopHeadlinesToState();
     } else if (event is FetchNewsArticle) {
     } else if (event is RefreshNews) {}
   }
 
-  Stream<NewsState> _mapFetchNewsToState() async* {
+  Stream<NewsState> _mapFetchTopHeadlinesToState() async* {
     yield NewsLoading();
     try {
-      final articles = await newsApi.fetchArticle();
-      yield NewsLoaded(articles: articles);
+      _topHeadline = await newsApi.fetchTopHeadline(country: Country.ind);
+      yield NewsLoaded(articles: _topHeadline);
     } catch (_) {
       yield NewsError();
     }
