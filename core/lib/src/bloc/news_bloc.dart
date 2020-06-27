@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:core/core.dart';
 import 'package:core/src/model/article.dart';
 import 'package:core/src/networking/news_api.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 import '../enums.dart';
@@ -17,27 +19,62 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc({@required this.newsApi}) : assert(newsApi != null);
 
   Articles _topHeadline;
+  Articles _q;
+  Articles _sources;
+  // Articles _category;
 
   @override
-  NewsState get initialState => NewsLoading();
+  NewsState get initialState => TopHeadlinesLoading();
 
   @override
   Stream<NewsState> mapEventToState(
     NewsEvent event,
   ) async* {
     if (event is FetchTopHeadlines) {
-      yield* _mapFetchTopHeadlinesToState();
-    } else if (event is FetchNewsArticle) {
-    } else if (event is RefreshNews) {}
+      yield* _mapFetchTopHeadlinesToState(country: event.country);
+    } else if (event is FetchTopHeadlinesQ) {
+      yield* _mapFetchTopHeadlinesQToState(q: event.q);
+    } else if (event is FetchTopHeadlinesSources) {
+      yield* _mapFetchTopHeadlinesSourcesToState(sources: event.sources);
+    }
   }
 
-  Stream<NewsState> _mapFetchTopHeadlinesToState() async* {
-    yield NewsLoading();
+  //TODO: do caching
+  Stream<NewsState> _mapFetchTopHeadlinesToState({Country country}) async* {
+    yield TopHeadlinesLoading();
     try {
-      _topHeadline = await newsApi.fetchTopHeadline(country: Country.ind);
-      yield NewsLoaded(articles: _topHeadline);
-    } catch (_) {
-      yield NewsError();
+      if (_topHeadline == null) {
+        _topHeadline = await newsApi.fetchTopHeadline(country: country);
+        yield TopHeadlineLoaded(articles: _topHeadline);
+      } else {
+        yield TopHeadlineLoaded(articles: _topHeadline);
+      }
+    } catch (e) {
+      print('exception: ${e.toString()}');
+      yield TopHeadlineError();
+    }
+  }
+
+  Stream<NewsState> _mapFetchTopHeadlinesQToState({String q}) async* {
+    yield QLoading();
+    try {
+      _q = await newsApi.fetchTopHeadlineQ(q: q);
+      yield QLoaded(articles: _q);
+    } catch (e) {
+      print('exception: ${e.toString()}');
+      yield QError();
+    }
+  }
+
+  Stream<NewsState> _mapFetchTopHeadlinesSourcesToState(
+      {String sources}) async* {
+    yield SourceLoading();
+    try {
+      _sources = await newsApi.fetchTopHeadlineSources(sources: sources);
+      yield SourceLoaded(articles: _sources);
+    } catch (e) {
+      print('exception: ${e.toString()}');
+      yield SourceError();
     }
   }
 }
