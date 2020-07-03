@@ -9,7 +9,7 @@ class FetchTopHeadlines extends NewsEvent {
   final Country country;
 
   FetchTopHeadlines({
-    this.country,
+    @required this.country,
   }) : assert(country != null, 'param must not be null');
   @override
   List<Object> get props => [country];

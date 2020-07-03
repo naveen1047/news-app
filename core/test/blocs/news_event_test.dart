@@ -19,7 +19,7 @@ void main() {
 
     group('Refresh news', () {
       test('props are [articles.status, articles.totalResults] equal', () {
-        expect(FetchTopHeadlines().props, ['ok', 20]);
+        expect(FetchTopHeadlines(country: Country.ind).props, ['ok', 20]);
       });
     },skip: true);
   });

@@ -46,3 +46,11 @@ flutter:
     - assets/images/match.png
     - assets/images/soccer.png
     - assets/images/logo.png
+    - assets/images/business.jpg
+    - assets/images/entertainment.jpg
+    - assets/images/general.jpg
+    - assets/images/health.jpg
+    - assets/images/science.jpg
+    - assets/images/sports.jpg
+    - assets/images/technology.jpg
+

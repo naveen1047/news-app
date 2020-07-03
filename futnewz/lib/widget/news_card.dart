@@ -10,6 +10,7 @@ class NewsCard extends StatelessWidget {
   final String description;
   final String website;
   final String author;
+  final bool topPadding;
 
   const NewsCard(
       {Key key,
@@ -18,7 +19,8 @@ class NewsCard extends StatelessWidget {
       this.description,
       this.website,
       this.author,
-      this.onTap})
+      this.onTap,
+      this.topPadding = false})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class NewsCard extends StatelessWidget {
         children: <Widget>[
           image != null
               ? Container(
+                  padding: topPadding ? ktopPadding : null,
                   height: 200.0,
                   width: double.maxFinite,
                   child: image,

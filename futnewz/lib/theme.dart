@@ -37,8 +37,16 @@ const TextStyle kTitle = TextStyle(
   fontWeight: FontWeight.bold,
   color: kDefaultTextColor,
 );
-const TextStyle kAppbarTitle =
-    TextStyle(fontSize: kTitleSize, color: kAccentColor);
-const TextStyle kDescription =
-    TextStyle(fontSize: kDescrptionSize, color: kDisabledTextColor);
-
+const TextStyle kTitleCard = TextStyle(
+  fontSize: kTitleSize,
+  fontWeight: FontWeight.bold,
+  color: kWhiteBackgroundColor,
+);
+const TextStyle kAppbarTitle = TextStyle(
+  fontSize: kTitleSize,
+  color: kAccentColor,
+);
+const TextStyle kDescription = TextStyle(
+  fontSize: kDescrptionSize,
+  color: kDisabledTextColor,
+);
