@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ArticleSearch extends SearchDelegate<String> {
-  // final UnmodifiableListView<Article> articles;
-
-  // ArticleSearch(this.articles);
-  final TextEditingController controller;
-
-  ArticleSearch(this.controller);
-
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -59,9 +52,7 @@ class ArticleSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // return Container();
-    print(controller);
     return ListTile(
-      title: Text('${controller.value}'),
       // onTap: controller.text,
     );
     // final results = articles

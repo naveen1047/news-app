@@ -5,7 +5,7 @@ import '../constant.dart';
 
 class NewsCard extends StatelessWidget {
   final Function onTap;
-  final Image image;
+  final String image;
   final String title;
   final String description;
   final String website;
@@ -33,41 +33,64 @@ class NewsCard extends StatelessWidget {
                   padding: topPadding ? ktopPadding : null,
                   height: 200.0,
                   width: double.maxFinite,
-                  child: image,
+                  child: Image.network(
+                    image,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
                 )
               : Container(),
-          Padding(
-            padding: ktopPadding,
-            child: Text(title, style: kTitle),
-          ),
-          Padding(
-            padding: ktopPadding,
-            child: Text(
-              description,
-              style: kDescription,
-            ),
-          ),
+          title != null
+              ? Padding(
+                  padding: ktopPadding,
+                  child: Text(title, style: kTitle),
+                )
+              : Container(),
+          description != null
+              ? Padding(
+                  padding: ktopPadding,
+                  child: Text(
+                    description,
+                    style: kDescription,
+                  ),
+                )
+              : Container(),
           Padding(
             padding: kBottomDoubledPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.public),
-                    SizedBox(width: 4.0),
-                    Text(
-                      website,
-                    ),
-                  ],
-                ),
-                Flexible(
-                  child: Text(
-                    author,
-                    // style: kDefaultText,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                website != null
+                    ? Row(
+                        children: <Widget>[
+                          Icon(Icons.public),
+                          SizedBox(width: 4.0),
+                          Text(
+                            website,
+                          ),
+                        ],
+                      )
+                    : Container(),
+                author != null
+                    ? Flexible(
+                        child: Text(
+                          author,
+                          // style: kDefaultText,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),

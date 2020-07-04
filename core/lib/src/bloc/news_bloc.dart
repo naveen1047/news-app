@@ -55,14 +55,19 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     }
   }
 
+  //TODO: implement correct state to return
   Stream<NewsState> _mapFetchTopHeadlinesQToState({String q}) async* {
-    yield QLoading();
+    yield TopHeadlinesLoading();
     try {
       _q = await newsApi.fetchTopHeadlineQ(q: q);
-      yield QLoaded(articles: _q);
+      if (_q.totalResults > 0) {
+        yield TopHeadlineLoaded(articles: _q);
+      } else {
+        throw('no result found');
+      }
     } catch (e) {
       print('exception: ${e.toString()}');
-      yield QError();
+      yield TopHeadlineError();
     }
   }
 

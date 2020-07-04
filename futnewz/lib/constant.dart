@@ -12,4 +12,4 @@ const double kSpacing = _padding;
 const EdgeInsetsGeometry ktopPadding = const EdgeInsets.only(top: _padding);
 const EdgeInsetsGeometry kVerticalPadding = const EdgeInsets.symmetric(vertical: _padding);
 const EdgeInsetsGeometry kBottomDoubledPadding = const EdgeInsets.only(top: _padding, bottom: _padding * 2);
-const EdgeInsetsGeometry kHomePadding = const EdgeInsets.symmetric(horizontal: _padding * 1.5);
+const EdgeInsetsGeometry kHomePadding = const EdgeInsets.symmetric(horizontal: _padding );
