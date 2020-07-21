@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:futnewz/colors.dart';
 import 'package:futnewz/constant.dart';
 import 'package:futnewz/theme.dart';
-import 'package:futnewz/widget/category_cards.dart';
-import 'package:futnewz/widget/search.dart';
+import 'package:futnewz/widget/common_widgets.dart';
 import 'widget/news_card.dart';
 
+/*
+  TODO:
+  
+  *task: 
+  1. show lable i.e, category/search result,
+  2. open article and read article
+  3. do not reload whole app on new event
+  
+*/
+
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: kWhiteBackgroundColor,
+    // systemNavigationBarColor: kWhiteBackgroundColor,
+  ));
   final NewsApi newsApi = NewsApi();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(MyApp(
@@ -28,34 +42,94 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: kWhiteBackgroundColor,
-            leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-            title: Text(
-              'NEWS',
-              style: kAppbarTitle,
-            ),
-            //TODO: solve search issue
-            actions: <Widget>[
-              Builder(builder: (BuildContext context) {
-                return IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () async {
-                      final result = await showSearch(
-                          context: context, delegate: ArticleSearch());
-                      print(result);
-                    });
-              }),
-            ],
-          ),
-          body: BlocProvider(
-            create: (context) => NewsBloc(newsApi: newsApi)
-              ..add(FetchTopHeadlines(country: Country.ind)),
-            child: HomeView(),
-          ),
+      home: AppView(newsApi: newsApi),
+    );
+  }
+}
+
+class AppView extends StatefulWidget {
+  final NewsApi newsApi;
+
+  const AppView({Key key, this.newsApi}) : super(key: key);
+  @override
+  _AppViewState createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<StatelessWidget> _widgetOptions = <StatelessWidget>[
+    HomeView(),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    // Text(
+    //   'Index 2: School',
+    //   style: optionStyle,
+    // ),
+  ];
+  static const List<BottomNavigationBarItem> _bottomItems =
+      const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      title: Text('Home'),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.search),
+      title: Text('Refresh'),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.refresh),
+      title: Text('reload'),
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      if (index != 2) {
+        _selectedIndex = index;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   backgroundColor: kWhiteBackgroundColor,
+        //   leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+        //   title: Text(
+        //     'NEWS',
+        //     style: kAppbarTitle,
+        //   ),
+        //   //TODO: solve search issue
+        //   actions: <Widget>[
+        //     Builder(builder: (BuildContext context) {
+        //       return IconButton(
+        //           icon: Icon(Icons.search),
+        //           onPressed: () async {
+        //             final result = await showSearch(
+        //                 context: context, delegate: ArticleSearch());
+        //             print(result);
+        //           });
+        //     }),
+        //   ],
+        // ),
+        body: BlocProvider(
+          create: (context) => NewsBloc(newsApi: widget.newsApi)
+            ..add(FetchTopHeadlines(country: Country.ind)),
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          items: _bottomItems,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
         ),
       ),
     );
@@ -76,47 +150,7 @@ class HomeView extends StatelessWidget {
           slivers: <Widget>[
             //search feature
             SearchQAppbar(),
-            SliverPadding(
-              padding: kHomePadding,
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: kSpacing,
-                  crossAxisSpacing: kSpacing,
-                  childAspectRatio: 2.0,
-                ),
-                delegate: SliverChildListDelegate([
-                  CategoryCard(
-                    image: 'assets/images/business.jpg',
-                    title: 'Business',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/entertainment.jpg',
-                    title: 'Entertainment',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/sports.jpg',
-                    title: 'Sports',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/general.jpg',
-                    title: 'General',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/science.jpg',
-                    title: 'Science',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/health.jpg',
-                    title: 'Health',
-                  ),
-                  CategoryCard(
-                    image: 'assets/images/technology.jpg',
-                    title: 'Technology',
-                  ),
-                ]),
-              ),
-            ),
+            // CategoryChips(),
             SliverPadding(
               padding: kHomePadding,
               sliver: SliverList(
@@ -170,6 +204,8 @@ class SearchQAppbar extends StatefulWidget {
 
 class _SearchQAppbarState extends State<SearchQAppbar> {
   final searchController = TextEditingController();
+  bool isTyping = false;
+  CategoryBar categories;
 
   @override
   void dispose() {
@@ -180,25 +216,58 @@ class _SearchQAppbarState extends State<SearchQAppbar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      floating: true,
-      title: TextField(
-        controller: searchController,
-        decoration: InputDecoration(
-          hintText: 'search "trendings"',
-          border: InputBorder.none,
-        ),
-        onSubmitted: (text) {
-          _sumitted(text);
-        },
-      ),
+      // floating: true,
+      pinned: true,
+      centerTitle: !isTyping,
+      leading: isTyping
+          ? IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _toggleSearch();
+                });
+              })
+          : IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+      title: isTyping
+          ? TextField(
+              autofocus: true,
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'go "trendings"',
+                border: InputBorder.none,
+              ),
+              onSubmitted: (text) {
+                _sumitted(text);
+              },
+            )
+          : Text(
+              'NEWS',
+              style: kAppbarTitle,
+            ),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            _sumitted(searchController.text);
-          },
-        ),
+        isTyping
+            ? IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  _sumitted(searchController.text);
+                },
+              )
+            : IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  setState(() {
+                    _toggleSearch();
+                  });
+                },
+              ),
       ],
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: Container(
+          height: 55.0,
+          child: CategoryBar(),
+        ),
+      ),
     );
   }
 
@@ -207,6 +276,45 @@ class _SearchQAppbarState extends State<SearchQAppbar> {
     if (text != null) {
       BlocProvider.of<NewsBloc>(context).add(FetchTopHeadlinesQ(q: text));
     }
-    searchController.clear();
+  }
+
+  void _toggleSearch() {
+    isTyping = !isTyping;
+  }
+}
+
+class CategoryBar extends StatefulWidget {
+  @override
+  _CategoryBarState createState() => _CategoryBarState();
+}
+
+class _CategoryBarState extends State<CategoryBar> {
+  List<Categories> category;
+  int _value = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: List<Widget>.generate(
+        Categories.values.length,
+        (int index) {
+          return ChoiceChip(
+            label: Text(
+              getCategory(Categories.values[index]),
+            ),
+            selected: _value == index,
+            onSelected: (bool selected) {
+              setState(() {
+                _value = selected ? index : null;
+              });
+              BlocProvider.of<NewsBloc>(context).add(
+                FetchTopHeadlinesCategory(categories: Categories.values[index]),
+              );
+            },
+          );
+        },
+      ).toList(),
+    );
   }
 }
