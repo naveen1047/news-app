@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:futnewz/colors.dart';
 import 'package:core/core.dart';
 
 class ActionChips extends StatelessWidget {

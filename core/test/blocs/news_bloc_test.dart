@@ -72,8 +72,8 @@ main() {
           },
           act: (bloc) => bloc.add(FetchTopHeadlinesQ(q: 'trump')),
           expect: [
-            QLoading(),
-            QLoaded(articles: articles),
+            // QLoading(),
+            TopHeadlineLoaded(articles: articles),
           ],
         );
         blocTest(
@@ -85,8 +85,19 @@ main() {
           },
           act: (bloc) => bloc.add(FetchTopHeadlinesSources(sources: 'cnn')),
           expect: [
-            SourceLoading(),
-            SourceLoaded(articles: articles),
+            TopHeadlineLoaded(articles: articles),
+          ],
+        );
+          blocTest(
+          'emits [CategoryLoading, CategoryLoaded ] when NewsApi throws returns value',
+          build: () async {
+            when(newsApi.fetchTopHeadlineCategory(category: Categories.business, country: Country.ind,))
+                .thenAnswer((_) => Future.value(articles));
+            return newsBloc;
+          },
+          act: (bloc) => bloc.add(FetchTopHeadlinesCategory(categories: Categories.business)),
+          expect: [
+            TopHeadlineLoaded(articles: articles),
           ],
         );
         blocTest(
@@ -113,8 +124,8 @@ main() {
           },
           act: (bloc) => bloc.add(FetchTopHeadlinesQ(q: 'Covid')),
           expect: [
-            QLoading(),
-            QError(),
+            // TopHeadlinesLoading(),
+            TopHeadlineError(),
           ],
         );
 
@@ -127,8 +138,25 @@ main() {
           },
           act: (bloc) => bloc.add(FetchTopHeadlinesSources(sources: 'CNN')),
           expect: [
-            SourceLoading(),
-            SourceError(),
+            // TopHeadlinesLoading(),
+            TopHeadlineError(),
+          ],
+        );
+
+        blocTest(
+          'emits [TopheadineCategoryLoading, TopheadineCategoryError] when NewsApi throws error',
+          build: () async {
+            when(newsApi.fetchTopHeadlineCategory(
+              category: Categories.business,
+              country: Country.ind,
+            )).thenThrow('Newsapi error');
+            return newsBloc;
+          },
+          act: (bloc) => bloc
+              .add(FetchTopHeadlinesCategory(categories: Categories.business)),
+          expect: [
+            // TopHeadlinesLoading(),
+            TopHeadlineError(),
           ],
         );
       },

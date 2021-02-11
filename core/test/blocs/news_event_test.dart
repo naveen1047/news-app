@@ -15,6 +15,11 @@ void main() {
         expect(FetchTopHeadlines(country: Country.us).props,
             [Country.us]);
       });
+
+      test('props should return Categotry', () {
+        expect(FetchTopHeadlinesCategory(categories: Categories.business).props,
+            [Categories.business]);
+      });
     });
 
     group('Refresh news', () {

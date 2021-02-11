@@ -21,7 +21,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   Articles _topHeadline;
   Articles _q;
   Articles _sources;
-  // Articles _category;
+  Articles _category;
 
   @override
   NewsState get initialState => TopHeadlinesLoading();
@@ -34,6 +34,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       yield* _mapFetchTopHeadlinesToState(country: event.country);
     } else if (event is FetchTopHeadlinesQ) {
       yield* _mapFetchTopHeadlinesQToState(q: event.q);
+    } else if (event is FetchTopHeadlinesCategory) {
+      yield* _mapFetchTopHeadlinesCategoryToState(categories: event.categories);
     } else if (event is FetchTopHeadlinesSources) {
       yield* _mapFetchTopHeadlinesSourcesToState(sources: event.sources);
     }
@@ -63,8 +65,21 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       if (_q.totalResults > 0) {
         yield TopHeadlineLoaded(articles: _q);
       } else {
-        throw('no result found');
+        throw ('no result found');
       }
+    } catch (e) {
+      print('exception: ${e.toString()}');
+      yield TopHeadlineError();
+    }
+  }
+
+  Stream<NewsState> _mapFetchTopHeadlinesCategoryToState(
+      {Categories categories}) async* {
+    yield TopHeadlinesLoading();
+    try {
+      _category = await newsApi.fetchTopHeadlineCategory(
+          category: categories, country: Country.ind);
+      yield TopHeadlineLoaded(articles: _category);
     } catch (e) {
       print('exception: ${e.toString()}');
       yield TopHeadlineError();
@@ -73,13 +88,13 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
 
   Stream<NewsState> _mapFetchTopHeadlinesSourcesToState(
       {String sources}) async* {
-    yield SourceLoading();
+    yield TopHeadlinesLoading();
     try {
       _sources = await newsApi.fetchTopHeadlineSources(sources: sources);
-      yield SourceLoaded(articles: _sources);
+      yield TopHeadlineLoaded(articles: _sources);
     } catch (e) {
       print('exception: ${e.toString()}');
-      yield SourceError();
+      yield TopHeadlineError();
     }
   }
 }

@@ -54,7 +54,9 @@ class NewsCard extends StatelessWidget {
           title != null
               ? Padding(
                   padding: ktopPadding,
-                  child: Text(title, style: kTitle),
+                  child: Text(
+                    title,
+                  ),
                 )
               : Container(),
           description != null
@@ -62,12 +64,12 @@ class NewsCard extends StatelessWidget {
                   padding: ktopPadding,
                   child: Text(
                     description,
-                    style: kDescription,
+                    // style: kDescription,
                   ),
                 )
               : Container(),
           Padding(
-            padding: kBottomDoubledPadding,
+            padding: ktopPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -93,6 +95,10 @@ class NewsCard extends StatelessWidget {
                     : Container(),
               ],
             ),
+          ),
+          Padding(
+            padding: kVerticalPadding,
+            child: Divider(),
           ),
         ],
       ),

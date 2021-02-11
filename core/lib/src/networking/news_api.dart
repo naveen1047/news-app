@@ -19,7 +19,7 @@ class NewsApi {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return Articles.fromJson(json.decode(response.body));
+      return compute(parseArticles, response.body);
     } else {
       throw Exception('Failed to load article:country');
     }
@@ -34,7 +34,7 @@ class NewsApi {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return Articles.fromJson(json.decode(response.body));
+      return compute(parseArticles, response.body);
     } else {
       throw Exception('Failed to load article:sources');
     }
@@ -42,7 +42,7 @@ class NewsApi {
 
   ///Category can't mix this param with the sources param.
   Future<Articles> fetchTopHeadlineCategory(
-      {@required Categories category, @required Country country}) async {
+      {@required Categories category, @required Country country, String sources}) async {
     final String cat = getCategory(category);
     final String reg = getCountry(country);
     final String url =
@@ -50,7 +50,7 @@ class NewsApi {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return Articles.fromJson(json.decode(response.body));
+      return compute(parseArticles, response.body);
     } else {
       throw Exception('Failed to load article:category');
     }
@@ -64,9 +64,13 @@ class NewsApi {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return Articles.fromJson(json.decode(response.body));
+      return compute(parseArticles, response.body);
     } else {
       throw Exception('Failed to load article:q');
     }
   }
+}
+
+Articles parseArticles(String responseBody) {
+  return Articles.fromJson(json.decode(responseBody));
 }

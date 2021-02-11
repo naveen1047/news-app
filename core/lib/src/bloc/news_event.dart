@@ -9,7 +9,7 @@ class FetchTopHeadlines extends NewsEvent {
   final Country country;
 
   FetchTopHeadlines({
-    @required this.country,
+    @required this.country, categories,
   }) : assert(country != null, 'param must not be null');
   @override
   List<Object> get props => [country];
@@ -23,6 +23,23 @@ class RefreshTopHeadlines extends NewsEvent {
   }) : assert(country != null, 'param must not be null');
   @override
   List<Object> get props => [country];
+}
+
+class FetchTopHeadlinesCategory extends NewsEvent {
+  final Categories categories;
+
+  FetchTopHeadlinesCategory({
+    @required this.categories,
+  }) : assert(categories != null, 'param must not be null');
+  @override
+  List<Object> get props => [categories];
+}
+
+class RefreshTopHeadlinesCategory extends NewsEvent {
+    final Categories categories;
+  RefreshTopHeadlinesCategory({@required this.categories}) : assert(categories != null, 'param must not be null');
+  @override
+  List<Object> get props => [categories];
 }
 
 class FetchTopHeadlinesQ extends NewsEvent {
